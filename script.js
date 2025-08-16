@@ -10,15 +10,15 @@ let sections = document.querySelectorAll('section');
 let navLinks = document.querySelectorAll('header nav a');
 
 window.onscroll = () => {
-    sections.foreach(sec =>{
-        let top = windows.scrollY;
+    sections.forEach(sec =>{
+        let top = window.scrollY;
         let offset = sec.offsetTop - 150;
-        let height = sec.offsetheight;
+        let height = sec.offsetHeight;
         let id = sec.getAttribute('id');
 
         if(top>= offset && top < offset + height){
-            navLinks.foreach(links=>{
-                links.classList.remove('aactive');
+            navLinks.forEach(links=>{
+                links.classList.remove('active');
                 document.querySelector('header nav a[href*=' + id + ']').classList.add('active');
             });
         };
@@ -36,7 +36,7 @@ ScrollReveal({
     delay: 200
 });
 ScrollReveal().reveal('.home-content , .heading', { origin: 'top' });
-ScrollReveal().reveal('.home-img , .services-container, .portfolio-box, .contact form' , {origin: 'botton'});
+ScrollReveal().reveal('.home-img , .services-container, .portfolio-box, .contact form' , {origin: 'bottom'});
 ScrollReveal().reveal('.home-content  h1, .about-img', {origin: 'left'});
 ScrollReveal().reveal('.home-content  p, .about-content', {origin: 'right'});
 // typed js animation
@@ -61,3 +61,48 @@ document.querySelectorAll('.navbar a').forEach(link => {
     document.querySelector('.navbar').classList.remove('active');
   });
 });
+
+// Simple front-end validation + friendly feedback
+(function(){
+  const form = document.getElementById('contactForm');
+
+  function isEmailValid(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const name = form.name.value.trim();
+    const email = form.email.value.trim();
+    const message = form.message.value.trim();
+
+    if(!name) {
+      alert('Please enter your name.');
+      form.name.focus();
+      return;
+    }
+    if(!email || !isEmailValid(email)) {
+      alert('Please enter a valid email address.');
+      form.email.focus();
+      return;
+    }
+    if(!message) {
+      alert('Please write a message.');
+      form.message.focus();
+      return;
+    }
+
+    // fake sending (replace with real API call if needed)
+    const btn = document.querySelector('.btn');
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+
+    setTimeout(() => {
+      alert('Message sent — thank you! I will get back to you soon.');
+      form.reset();
+      btn.disabled = false;
+      btn.textContent = 'Send message';
+    }, 900);
+  });
+})();
